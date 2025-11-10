@@ -1,16 +1,15 @@
-import AllBlogs from "@/pages/blogs/AllBlogs";
-import CreateBlog from "@/pages/blogs/CreateBlog";
-import Dashboard from "@/pages/Dashboard";
-import Orders from "@/pages/orders";
+import { routes } from "@/routes";
 import { Route, Routes } from "react-router-dom";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/orders" element={<Orders />} />
-      <Route path="/blogs" element={<AllBlogs />} />
-      <Route path="/blogs/create" element={<CreateBlog />} />
+      {routes.map((route) => {
+        console.log("routes is", route)
+        return (
+          <Route key={route.name} path={route.path} element={<route.element />} /> 
+        )
+      })}
     </Routes>
   );
 };

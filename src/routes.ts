@@ -1,132 +1,98 @@
-// import { lazy } from "react";
-// import { Home, FileText, Plus, Settings } from "lucide-react";
-// import { type NavItem } from "./interfaces";
+import { Home, FileText, Plus } from "lucide-react";
+import Dashboard from "./pages/Dashboard";
+import { AllBlogs, CreateBlog } from "./pages";
 
 // export const lazyPage = (path: string) =>
 //   lazy(() => import(`../pages/${path}`).then((m) => ({ default: m.default })));
-
-// export const navItems: NavItem[] = [
-//   {
-//     name: "Dashboard",
-//     path: "/",
-//     icon: Home,
-//   },
-
-//   {
-//     name: "Blogs",
-//     icon: FileText,
-//     children: [
-//       {
-//         name: "All Blogs",
-//         path: "/blogs",
-//       },
-//       {
-//         name: "Create Blog",
-//         path: "/blogs/create",
-//         icon: Plus,
-//       },
-//       {
-//         name: "Edit Blog",
-//         path: "/blogs/:id/edit",
-//         skip: true,
-//       },
-//       {
-//         name: "View Blog",
-//         path: "/blogs/:id",
-//         skip: true,
-//       },
-//     ],
-//   },
-
-//   {
-//     name: "Settings",
-//     path: "/settings",
-//     icon: Settings,
-//   },
-// ];
-
-import { lazy } from "react";
-import {
-  Home,
-  FileText,
-  Plus,
-  Settings,
-  Users,
-  BarChart3,
-  ShoppingCart,
-  Boxes,
-  MessageSquare,
-  Bell,
-} from "lucide-react";
-
-export const lazyPage = (path: string) =>
-  lazy(() => import(`../pages/${path}`).then((m) => ({ default: m.default })));
 
 export const navItems = [
   {
     name: "Dashboard",
     path: "/",
     icon: Home,
+    element: Dashboard,
+    skip: false,
   },
 
   {
     name: "Blogs",
+    path: "/blogs",
     icon: FileText,
+    element: AllBlogs,
+    skip: false,
     children: [
-      { name: "All Blogs", path: "/blogs" },
-      { name: "Create Blog", path: "/blogs/create", icon: Plus },
-      { name: "Edit Blog", path: "/blogs/:id/edit", skip: true },
-      { name: "View Blog", path: "/blogs/:id", skip: true },
+      // { name: "All Blogs", path: "/blogs", element: NotFound,},
+      { name: "Create Blog", path: "/blogs/create", icon: Plus, element: CreateBlog, skip: false, },
+      // { name: "Edit Blog", path: "/blogs/:id/edit", element: NotFound, },
+      // { name: "View Blog", path: "/blogs/:id", element: NotFound, },
     ],
   },
 
-  {
-    name: "Users",
-    icon: Users,
-    children: [
-      { name: "All Users", path: "/users" },
-      { name: "Add User", path: "/users/create", icon: Plus },
-      { name: "Edit User", path: "/users/:id/edit", skip: true },
-    ],
-  },
+  // {
+  //   name: "Users",
+  //   icon: Users,
+  //   children: [
+  //     { name: "All Users", path: "/users" },
+  //     { name: "Add User", path: "/users/create", icon: Plus },
+  //     { name: "Edit User", path: "/users/:id/edit", skip: true },
+  //   ],
+  // },
 
-  {
-    name: "Products",
-    icon: Boxes,
-    children: [
-      { name: "All Products", path: "/products" },
-      { name: "Add Product", path: "/products/create", icon: Plus },
-      { name: "Edit Product", path: "/products/:id/edit", skip: true },
-    ],
-  },
+  // {
+  //   name: "Products",
+  //   icon: Boxes,
+  //   children: [
+  //     { name: "All Products", path: "/products" },
+  //     { name: "Add Product", path: "/products/create", icon: Plus },
+  //     { name: "Edit Product", path: "/products/:id/edit", skip: true },
+  //   ],
+  // },
 
-  {
-    name: "Orders",
-    path: "/orders",
-    icon: ShoppingCart,
-  },
+  // {
+  //   name: "Orders",
+  //   path: "/orders",
+  //   icon: ShoppingCart,
+  // },
 
-  {
-    name: "Analytics",
-    path: "/analytics",
-    icon: BarChart3,
-  },
+  // {
+  //   name: "Analytics",
+  //   path: "/analytics",
+  //   icon: BarChart3,
+  // },
 
-  {
-    name: "Messages",
-    path: "/messages",
-    icon: MessageSquare,
-  },
+  // {
+  //   name: "Messages",
+  //   path: "/messages",
+  //   icon: MessageSquare,
+  // },
 
-  {
-    name: "Notifications",
-    path: "/notifications",
-    icon: Bell,
-  },
+  // {
+  //   name: "Notifications",
+  //   path: "/notifications",
+  //   icon: Bell,
+  // },
 
-  {
-    name: "Settings",
-    path: "/settings",
-    icon: Settings,
-  },
+  // {
+  //   name: "Settings",
+  //   path: "/settings",
+  //   icon: Settings,
+  // },
 ];
+
+
+export const routes = navItems.flatMap((item) => {
+  const parent = item.path
+    ? [{ name: item.name, path: item.path, icon: item.icon, element: item.element, skip: item.skip }]
+    : [];
+
+  const children = item.children?.map((child) => ({
+    name: child.name,
+    path: child.path,
+    icon: child.icon,
+    element: child.element,
+    skip: child.skip,
+  })) ?? [];
+
+  return [...parent, ...children];
+});
+

@@ -1,49 +1,3 @@
-// import { NavLink, useLocation } from "react-router-dom";
-// import { navItems } from "@/routes";
-// import { SidebarHeader, SidebarTrigger } from "@/components/ui/sidebar";
-
-// import {
-//   Sidebar,
-//   SidebarContent,
-//   SidebarGroup,
-//   SidebarGroupLabel,
-//   SidebarGroupContent,
-//   SidebarMenu,
-//   SidebarMenuItem,
-//   SidebarMenuButton,
-//   SidebarMenuSub,
-//   SidebarMenuSubItem,
-//   SidebarMenuSubButton,
-// } from "@/components/ui/sidebar";
-
-// export default function AppSidebar() {
-//   const { pathname } = useLocation();
-
-//   return (
-//     <Sidebar collapsible="icon">
-//       <SidebarContent>
-//         <SidebarGroup>
-//           <SidebarGroupLabel>Application</SidebarGroupLabel>
-
-//           <SidebarGroupContent>
-//             <SidebarMenu>
-//               {navItems
-//                 .filter((item) => !item.skip)
-//                 .map((item) => (
-//                   <SidebarItem
-//                     key={item.name}
-//                     item={item}
-//                     pathname={pathname}
-//                   />
-//                 ))}
-//             </SidebarMenu>
-//           </SidebarGroupContent>
-//         </SidebarGroup>
-//       </SidebarContent>
-//     </Sidebar>
-//   );
-// }
-
 import {
   Sidebar,
   SidebarHeader,
@@ -59,11 +13,11 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-import { useLocation, NavLink } from "react-router-dom";
+import {  NavLink, useNavigate } from "react-router-dom";
 import { navItems } from "@/routes";
 
 export default function AppSidebar() {
-  const { pathname } = useLocation();
+  
 
   return (
     <Sidebar collapsible="icon">
@@ -74,20 +28,23 @@ export default function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems
                 //@ts-ignore
                 .filter((item) => !item.skip)
-                .map((item) => (
-                  <SidebarItem
-                    key={item.name}
-                    item={item}
-                    pathname={pathname}
-                  />
-                ))}
+                .map((item) => {
+                  console.log("tems from", item)
+                 return (
+                   <SidebarItem
+                   key={item.name}
+                   item={item}
+                   pathname={item.path}
+                   />
+                  )
+                })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -97,11 +54,13 @@ export default function AppSidebar() {
 }
 
 function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
+  const navigate = useNavigate();
   // Has children -> parent section menu
   if (item.children?.length) {
+    console.log(item, pathname)
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton tooltip={item.name}>
+        <SidebarMenuButton  onClick={() => navigate(item.path)} tooltip={item.name}>
           {item.icon && <item.icon />}
           <span>{item.name}</span>
         </SidebarMenuButton>
