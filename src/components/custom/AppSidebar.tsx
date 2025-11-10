@@ -1,28 +1,77 @@
-import { NavLink } from "react-router-dom";
-import { navItems } from "@/routes";
+// import { NavLink, useLocation } from "react-router-dom";
+// import { navItems } from "@/routes";
+// import { SidebarHeader, SidebarTrigger } from "@/components/ui/sidebar";
+
+// import {
+//   Sidebar,
+//   SidebarContent,
+//   SidebarGroup,
+//   SidebarGroupLabel,
+//   SidebarGroupContent,
+//   SidebarMenu,
+//   SidebarMenuItem,
+//   SidebarMenuButton,
+//   SidebarMenuSub,
+//   SidebarMenuSubItem,
+//   SidebarMenuSubButton,
+// } from "@/components/ui/sidebar";
+
+// export default function AppSidebar() {
+//   const { pathname } = useLocation();
+
+//   return (
+//     <Sidebar collapsible="icon">
+//       <SidebarContent>
+//         <SidebarGroup>
+//           <SidebarGroupLabel>Application</SidebarGroupLabel>
+
+//           <SidebarGroupContent>
+//             <SidebarMenu>
+//               {navItems
+//                 .filter((item) => !item.skip)
+//                 .map((item) => (
+//                   <SidebarItem
+//                     key={item.name}
+//                     item={item}
+//                     pathname={pathname}
+//                   />
+//                 ))}
+//             </SidebarMenu>
+//           </SidebarGroupContent>
+//         </SidebarGroup>
+//       </SidebarContent>
+//     </Sidebar>
+//   );
+// }
 
 import {
   Sidebar,
+  SidebarHeader,
+  SidebarTrigger,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
-
-interface NavItem {
-  name: string;
-  path?: string;
-  icon?: any;
-  skip?: boolean;
-  children?: NavItem[];
-}
+import { useLocation, NavLink } from "react-router-dom";
+import { navItems } from "@/routes";
 
 export default function AppSidebar() {
+  const { pathname } = useLocation();
+
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
+      {/* ✅ Collapse button sits here — always correct position */}
+      <SidebarHeader className="flex justify-end p-2">
+        <SidebarTrigger />
+      </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -30,9 +79,14 @@ export default function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems
+                //@ts-ignore
                 .filter((item) => !item.skip)
                 .map((item) => (
-                  <SidebarItem key={item.name} item={item} />
+                  <SidebarItem
+                    key={item.name}
+                    item={item}
+                    pathname={pathname}
+                  />
                 ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -42,48 +96,47 @@ export default function AppSidebar() {
   );
 }
 
-
-
-const SidebarItem = ({ item }: { item: NavItem }) => {
-  // skip items
-  if (item.skip) return null;
-
-  // has children → render nested menu
+function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
+  // Has children -> parent section menu
   if (item.children?.length) {
     return (
       <SidebarMenuItem>
-        <div className="px-2 py-1 text-sm font-medium text-muted-foreground">
-          {item.name}
-        </div>
+        <SidebarMenuButton tooltip={item.name}>
+          {item.icon && <item.icon />}
+          <span>{item.name}</span>
+        </SidebarMenuButton>
 
-        <SidebarMenu>
+        <SidebarMenuSub>
           {item.children
-            .filter((child) => !child.skip)
-            .map((child) => (
-              <SidebarItem key={child.name} item={child} />
+            .filter((sub: any) => !sub.skip)
+            .map((sub: any) => (
+              <SidebarMenuSubItem key={sub.name}>
+                <SidebarMenuSubButton asChild isActive={pathname === sub.path}>
+                  <NavLink to={sub.path}>
+                    {sub.icon && <sub.icon />}
+                    <span>{sub.name}</span>
+                  </NavLink>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
             ))}
-        </SidebarMenu>
+        </SidebarMenuSub>
       </SidebarMenuItem>
     );
   }
 
-  // leaf node
+  // Simple item (no children)
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild>
-        <NavLink
-          to={item.path!}
-          className={({ isActive }) =>
-            [
-              "flex items-center gap-2",
-              isActive ? "text-primary font-medium" : "",
-            ].join(" ")
-          }
-        >
-          {item.icon && <item.icon className="h-4 w-4" />}
+      <SidebarMenuButton
+        asChild
+        isActive={pathname === item.path}
+        tooltip={item.name}
+      >
+        <NavLink to={item.path}>
+          {item.icon && <item.icon />}
           <span>{item.name}</span>
         </NavLink>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
-};
+}
