@@ -7,7 +7,7 @@ export default function AllBlogs() {
   const blogs: Blog[] = []; // Later → load from backend
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4">
+    <div className="mx-auto space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">All Blogs</h1>
         <Button asChild>
