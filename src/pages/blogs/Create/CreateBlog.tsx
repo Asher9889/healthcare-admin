@@ -8,7 +8,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Blog, blogSchema } from "@/validations";
-import { TipTapEditor } from "@/components";
+import { FeaturedImageField, TipTapEditor } from "@/components";
+import { createBlogService } from "./services/blog.api";
+import { toast } from "sonner";
 
 export default function CreateBlog() {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ export default function CreateBlog() {
     register,
     control,
     handleSubmit,
-    // setValue,
+    setValue,
     watch,
     formState: { errors },
   } = useForm<Blog>({
@@ -34,18 +36,24 @@ export default function CreateBlog() {
   const title = watch("title");
   const slug = title?.toLowerCase().trim().replace(/\s+/g, "-");
 
-  const onSubmit = (data: Blog) => {
-    const newBlog = {
-      ...data,
-      slug,
-      id: crypto.randomUUID(),
-    };
-
-    console.log("New Blog Created:", newBlog);
-
-    // TODO: API call
-
-    navigate("/blogs");
+  const onSubmit = async(data: Blog) => {
+   try {
+     const newBlog = {
+       ...data,
+       slug,
+     };
+     delete newBlog.featuredImageFile;
+     const result = await createBlogService(newBlog);
+     if(!result.status) {
+       toast.error(result.message);
+       return;
+     }
+     toast.success(result.message);
+     navigate("/blogs");
+   } catch (error:any) {
+     toast.error(error?.response?.data?.message || "Failed to create blog");
+    console.error(error);
+   }
   };
 
   return (
@@ -80,6 +88,22 @@ export default function CreateBlog() {
             )}
           </div>
 
+          {/* IMAGE */}
+        <FeaturedImageField
+          register={register}
+          setValue={setValue}
+          error={errors.featuredImage}
+          watch={watch}
+        />
+          {/* AUTHOR */}
+          <div className="grid gap-1">
+            <Label>Author</Label>
+            <Input {...register("author")} />
+            {errors.author && (
+              <p className="text-red-500 text-sm">{errors.author.message}</p>
+            )}
+          </div>
+
           {/* CONTENT */}
           <div className="grid gap-1">
             <Controller 
@@ -97,25 +121,7 @@ export default function CreateBlog() {
             )}
           </div>
 
-          {/* IMAGE */}
-          <div className="grid gap-1">
-            <Label>Featured Image URL</Label>
-            <Input {...register("featuredImage")} />
-            {errors.featuredImage && (
-              <p className="text-red-500 text-sm">
-                {errors.featuredImage.message}
-              </p>
-            )}
-          </div>
-
-          {/* AUTHOR */}
-          <div className="grid gap-1">
-            <Label>Author</Label>
-            <Input {...register("author")} />
-            {errors.author && (
-              <p className="text-red-500 text-sm">{errors.author.message}</p>
-            )}
-          </div>
+          
 
           <Button type="submit" className="w-full">
             Create Blog
