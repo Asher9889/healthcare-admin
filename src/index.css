@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* For Tip-Tap */
+@import './styles/_keyframe-animations.scss'; 
+@import './styles/_variables.scss'; 
+/* For Tip-Tap End */ 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

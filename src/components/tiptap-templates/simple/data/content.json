@@ -1,0 +1,258 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": null,
+        "level": 1
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Understanding Type 2 Diabetes"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": null },
+      "content": [
+        {
+          "type": "text",
+          "text": "Type 2 diabetes is a chronic metabolic condition characterized by high blood sugar levels. It occurs when the body becomes resistant to "
+        },
+        {
+          "type": "text",
+          "marks": [{ "type": "italic" }],
+          "text": "insulin"
+        },
+        {
+          "type": "text",
+          "text": " or when the pancreas does not produce enough insulin."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "attrs": {
+        "src": "/images/diabetes-placeholder.jpg",
+        "alt": "diabetes-info",
+        "title": "Type 2 Diabetes Illustration"
+      }
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": null,
+        "level": 2
+      },
+      "content": [
+        { "type": "text", "text": "Common Symptoms" }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "content": [
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Increased thirst" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Frequent urination" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Fatigue" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Blurred vision" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": null,
+        "level": 2
+      },
+      "content": [
+        { "type": "text", "text": "Risk Factors" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": "left" },
+      "content": [
+        { "type": "text", "text": "Several factors can contribute to Type 2 diabetes, including:" }
+      ]
+    },
+    {
+      "type": "taskList",
+      "content": [
+        {
+          "type": "taskItem",
+          "attrs": { "checked": true },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Family history of diabetes" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "taskItem",
+          "attrs": { "checked": false },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Sedentary lifestyle" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "taskItem",
+          "attrs": { "checked": false },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "Excessive body weight" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "blockquote",
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": { "textAlign": null },
+          "content": [
+            {
+              "type": "text",
+              "marks": [{ "type": "italic" }],
+              "text": "Type 2 diabetes often develops gradually, and many individuals may not notice symptoms early on."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": { "textAlign": null, "level": 2 },
+      "content": [
+        { "type": "text", "text": "Diagnosis Overview" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": null },
+      "content": [
+        {
+          "type": "text",
+          "text": "Diagnosis is typically performed using blood sugar tests. A healthcare professional can evaluate results and provide guidance. "
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": { "language": null },
+      "content": [
+        {
+          "type": "text",
+          "text": "Example Test:\nFasting Blood Sugar (FBS) > 126 mg/dL"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": null },
+      "content": [
+        {
+          "type": "text",
+          "text": "For more detailed medical information, visit "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "link",
+              "attrs": {
+                "href": "https://www.cdc.gov/diabetes/",
+                "target": "_blank",
+                "rel": "noopener noreferrer nofollow",
+                "class": null
+              }
+            }
+          ],
+          "text": "CDC diabetes resources"
+        },
+        { "type": "text", "text": "." }
+      ]
+    },
+    {
+      "type": "horizontalRule"
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "textAlign": "left",
+        "level": 2
+      },
+      "content": [
+        { "type": "text", "text": "Living with Type 2 Diabetes" }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": "left" },
+      "content": [
+        {
+          "type": "text",
+          "text": "Lifestyle changes such as balanced nutrition, regular physical activity, reduced sugar intake, and stress management can support overall wellness."
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": { "textAlign": "left" }
+    }
+  ]
+}
