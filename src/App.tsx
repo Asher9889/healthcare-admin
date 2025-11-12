@@ -6,7 +6,7 @@ import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/admin">
       <Layout> { /* for sidebar */}
        <Toaster position="top-right"/>
         <AppRoutes /> { /* for routes */}
