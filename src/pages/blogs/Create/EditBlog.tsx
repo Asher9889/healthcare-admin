@@ -1,5 +1,4 @@
-import { useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -9,11 +8,37 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Blog, blogSchema } from "@/validations";
 import { FeaturedImageField, TipTapEditor } from "@/components";
-import { createBlog } from "../services/blog.api";
+import { createBlog, getBlog } from "../services/blog.api";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
-export default function CreateBlog() {
+export default function EditBlog() {
+  const [_blog, setBlog] = useState<Blog>({
+    title: "",
+    summary: "",
+    content: "",
+    author: "",
+    featuredImage: "",
+  });
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const slug = pathname.split("/")[2];
+
+  const fetchBlog = async () => {
+    const data = await getBlog(slug);
+    setBlog(data.data || {});
+    reset({
+      title: data.data.title,
+      summary: data.data.summary,
+      content: data.data.content,
+      featuredImage: data.data.featuredImage,
+      author: data.data.author,
+    });
+  };
+
+  useEffect(() => {
+    fetchBlog();
+  }, [slug]);
 
   const {
     register,
@@ -22,19 +47,13 @@ export default function CreateBlog() {
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm<Blog>({
     resolver: zodResolver(blogSchema),
-    defaultValues: {
-      title: "",
-      summary: "",
-      content: "",
-      featuredImage: "",
-      author: "",
-    },
   });
 
-  const title = watch("title");
-  const slug = title?.toLowerCase().trim().replace(/\s+/g, "-");
+  // const title = watch("title");
+  // const slug = title?.toLowerCase().trim().replace(/\s+/g, "-");
 
   const onSubmit = async (data: Blog) => {
     try {
@@ -118,7 +137,7 @@ export default function CreateBlog() {
           </div>
 
           <Button type="submit" className="w-full">
-            Create Blog
+            Update Blog
           </Button>
         </form>
       </CardContent>

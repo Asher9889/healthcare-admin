@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,140 +12,135 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
 export default function Blog() {
-    const [_blog, setBlog] = useState<Blog>({
-        title: "",
-        summary: "",
-        content: "",
-        author: "",
-        featuredImage: "",
-    })
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
-    const slug = pathname.split("/")[2];
+  const [_blog, setBlog] = useState<Blog>({
+    title: "",
+    summary: "",
+    content: "",
+    author: "",
+    featuredImage: "",
+  });
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const slug = pathname.split("/")[2];
 
-    const fetchBlog = async () => {
-        const data = await getBlog(slug);
-        setBlog(data.data || {});
-        reset({
-            title: data.data.title,
-            summary: data.data.summary,
-            content: data.data.content,
-            featuredImage: data.data.featuredImage,
-            author: data.data.author,
-        });
-    }
-
-    useEffect(() => {
-        fetchBlog();
-    }, [slug])
-
-    const {
-        register,
-        control,
-        handleSubmit,
-        setValue,
-        watch,
-        formState: { errors },
-        reset,
-    } = useForm<Blog>({
-        resolver: zodResolver(blogSchema)
+  const fetchBlog = async () => {
+    const data = await getBlog(slug);
+    setBlog(data.data || {});
+    reset({
+      title: data.data.title,
+      summary: data.data.summary,
+      content: data.data.content,
+      featuredImage: data.data.featuredImage,
+      author: data.data.author,
     });
+  };
 
-    // const title = watch("title");
-    // const slug = title?.toLowerCase().trim().replace(/\s+/g, "-");
+  useEffect(() => {
+    fetchBlog();
+  }, [slug]);
 
-    const onSubmit = async (data: Blog) => {
-        try {
-            const newBlog = {
-                ...data,
-                slug,
-            };
-            delete newBlog.featuredImageFile;
-            const result = await createBlog(newBlog);
-            if (!result.status) {
-                toast.error(result.message);
-                return;
-            }
-            toast.success(result.message);
-            navigate("/blogs");
-        } catch (error: any) {
-            toast.error(error?.response?.data?.message || "Failed to create blog");
-            console.error(error);
-        }
-    };
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<Blog>({
+    resolver: zodResolver(blogSchema),
+  });
 
-    return (
-        <Card className="mx-auto">
-            <CardHeader>
-                <CardTitle>Create Blog</CardTitle>
-            </CardHeader>
+  // const title = watch("title");
+  // const slug = title?.toLowerCase().trim().replace(/\s+/g, "-");
 
-            <CardContent>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    {/* TITLE */}
-                    <div className="grid gap-1">
-                        <Label>Title</Label>
-                        <Input {...register("title")} />
-                        {errors.title && (
-                            <p className="text-red-500 text-sm">{errors.title.message}</p>
-                        )}
-                    </div>
+  const onSubmit = async (data: Blog) => {
+    try {
+      const newBlog = {
+        ...data,
+        slug,
+      };
+      delete newBlog.featuredImageFile;
+      const result = await createBlog(newBlog);
+      if (!result.status) {
+        toast.error(result.message);
+        return;
+      }
+      toast.success(result.message);
+      navigate("/blogs");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to create blog");
+      console.error(error);
+    }
+  };
 
-                    {/* SLUG (auto) */}
-                    <div className="grid gap-1">
-                        <Label>Slug (auto)</Label>
-                        <Input value={slug} disabled className="bg-muted" />
-                    </div>
+  return (
+    <Card className="mx-auto">
+      <CardHeader>
+        <CardTitle>Blog</CardTitle>
+      </CardHeader>
 
-                    {/* SUMMARY */}
-                    <div className="grid gap-1">
-                        <Label>Summary</Label>
-                        <Textarea rows={2} {...register("summary")} />
-                        {errors.summary && (
-                            <p className="text-red-500 text-sm">{errors.summary.message}</p>
-                        )}
-                    </div>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* TITLE */}
+          <div className="grid gap-1">
+            <Label>Title</Label>
+            <Input {...register("title")} disabled />
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title.message}</p>
+            )}
+          </div>
 
-                    {/* IMAGE */}
-                    <FeaturedImageField
-                        register={register}
-                        setValue={setValue}
-                        error={errors.featuredImage}
-                        watch={watch}
-                    />
-                    {/* AUTHOR */}
-                    <div className="grid gap-1">
-                        <Label>Author</Label>
-                        <Input {...register("author")} />
-                        {errors.author && (
-                            <p className="text-red-500 text-sm">{errors.author.message}</p>
-                        )}
-                    </div>
+          {/* SLUG (auto) */}
+          <div className="grid gap-1">
+            <Label>Slug (auto)</Label>
+            <Input value={slug} disabled className="bg-muted" />
+          </div>
 
-                    {/* CONTENT */}
-                    <div className="grid gap-1">
-                        <Controller
-                            name="content"
-                            control={control}
-                            render={({ field }) => (
-                                <TipTapEditor
-                                    {...field}
-                                />
-                            )}
-                        />
+          {/* SUMMARY */}
+          <div className="grid gap-1">
+            <Label>Summary</Label>
+            <Textarea rows={2} {...register("summary")} disabled />
+            {errors.summary && (
+              <p className="text-red-500 text-sm">{errors.summary.message}</p>
+            )}
+          </div>
 
-                        {errors.content && (
-                            <p className="text-red-500 text-sm">{errors.content.message}</p>
-                        )}
-                    </div>
+          {/* IMAGE */}
+          <FeaturedImageField
+            register={register}
+            setValue={setValue}
+            error={errors.featuredImage}
+            watch={watch}
+            disabled
+          />
+          {/* AUTHOR */}
+          <div className="grid gap-1">
+            <Label>Author</Label>
+            <Input {...register("author")} disabled />
+            {errors.author && (
+              <p className="text-red-500 text-sm">{errors.author.message}</p>
+            )}
+          </div>
 
+          {/* CONTENT */}
+          <div className="grid gap-1">
+            <Controller
+              name="content"
+              control={control}
+              render={({ field }) => <TipTapEditor {...field} disabled />}
+            />
 
+            {errors.content && (
+              <p className="text-red-500 text-sm">{errors.content.message}</p>
+            )}
+          </div>
 
-                    <Button type="submit" className="w-full">
-                        Create Blog
-                    </Button>
-                </form>
-            </CardContent>
-        </Card>
-    );
+          {/* <Button type="submit" disabled className="w-full">
+            Create Blog
+          </Button> */}
+        </form>
+      </CardContent>
+    </Card>
+  );
 }
