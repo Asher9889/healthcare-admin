@@ -73,7 +73,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import content from "@/components/tiptap-templates/simple/data/content.json"
+// import content from "@/components/tiptap-templates/simple/data/content.json"
 
 import { toast } from "sonner"
 
@@ -191,12 +191,17 @@ type Props = {
 }
 
 export function SimpleEditor({ value, onChange }: Props) {
+  const [content, setContent] = useState(value)
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main"
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setContent(value)
+  }, [value])
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -238,11 +243,17 @@ export function SimpleEditor({ value, onChange }: Props) {
         },
       }),
     ],
-    content: value?.length > 0 ? value : content,
+    content: content,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML())
     },
   })
+
+  useEffect(() => {
+  if (editor && value && editor.getHTML() !== value) {
+    editor.commands.setContent(value);
+  }
+}, [value, editor]);
 
   const rect = useCursorVisibility({
     editor,

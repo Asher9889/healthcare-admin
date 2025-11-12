@@ -10,5 +10,9 @@ export const endPoints = {
     getBlog: {
         url: "/blogs/:slug",
         method: "GET"
+    },
+    updateBlog: {
+        url: "/blogs/:slug",
+        method: "PUT"
     }
 }

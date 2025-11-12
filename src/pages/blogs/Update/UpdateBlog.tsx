@@ -8,11 +8,11 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Blog, blogSchema } from "@/validations";
 import { FeaturedImageField, TipTapEditor } from "@/components";
-import { createBlog, getBlog } from "../services/blog.api";
+import { getBlog, updateBlog } from "../services/blog.api";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
-export default function Blog() {
+export default function UpdateBlog() {
     const [_blog, setBlog] = useState<Blog>({
         title: "",
         summary: "",
@@ -22,7 +22,7 @@ export default function Blog() {
     })
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const slug = pathname.split("/")[2];
+    const slug = pathname.split("/")[3];
 
     const fetchBlog = async () => {
         const data = await getBlog(slug);
@@ -38,7 +38,7 @@ export default function Blog() {
 
     useEffect(() => {
         fetchBlog();
-    }, [slug])
+    }, [])
 
     const {
         register,
@@ -62,7 +62,7 @@ export default function Blog() {
                 slug,
             };
             delete newBlog.featuredImageFile;
-            const result = await createBlog(newBlog);
+            const result = await updateBlog(slug, newBlog);
             if (!result.status) {
                 toast.error(result.message);
                 return;
@@ -78,7 +78,7 @@ export default function Blog() {
     return (
         <Card className="mx-auto">
             <CardHeader>
-                <CardTitle>View Blog</CardTitle>
+                <CardTitle>Edit Blog</CardTitle>
             </CardHeader>
 
             <CardContent>
@@ -86,7 +86,7 @@ export default function Blog() {
                     {/* TITLE */}
                     <div className="grid gap-1">
                         <Label>Title</Label>
-                        <Input disabled  {...register("title")} />
+                        <Input   {...register("title")} />
                         {errors.title && (
                             <p className="text-red-500 text-sm">{errors.title.message}</p>
                         )}
@@ -95,13 +95,13 @@ export default function Blog() {
                     {/* SLUG (auto) */}
                     <div className="grid gap-1">
                         <Label>Slug (auto)</Label>
-                        <Input disabled value={slug} className="bg-muted" />
+                        <Input  value={slug} className="bg-muted" />
                     </div>
 
                     {/* SUMMARY */}
                     <div className="grid gap-1">
                         <Label>Summary</Label>
-                        <Textarea disabled rows={2} {...register("summary")} />
+                        <Textarea  rows={2} {...register("summary")} />
                         {errors.summary && (
                             <p className="text-red-500 text-sm">{errors.summary.message}</p>
                         )}
@@ -117,7 +117,7 @@ export default function Blog() {
                     {/* AUTHOR */}
                     <div className="grid gap-1">
                         <Label>Author</Label>
-                        <Input disabled {...register("author")} />
+                        <Input  {...register("author")} />
                         {errors.author && (
                             <p className="text-red-500 text-sm">{errors.author.message}</p>
                         )}
@@ -127,7 +127,6 @@ export default function Blog() {
                     <div className="grid gap-1">
                         <Controller
                             name="content"
-                            disabled
                             control={control}
                             render={({ field }) => (
                                 <TipTapEditor
@@ -143,8 +142,8 @@ export default function Blog() {
 
 
 
-                    <Button disabled type="submit" className="w-full">
-                        Create Blog
+                    <Button  type="submit" className="w-full">
+                        Update Blog
                     </Button>
                 </form>
             </CardContent>

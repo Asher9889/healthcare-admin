@@ -112,6 +112,7 @@ export default function CreateBlog() {
               render={({ field }) => (
                 <TipTapEditor
                   {...field}
+                  value={field.value}
                 />
               )}
             />

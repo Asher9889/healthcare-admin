@@ -15,3 +15,8 @@ export async function getBlog(slug: string){
   const { data } = await api.get(endPoints.getBlog.url.replace(":slug", slug))
   return data;
 }
+
+export async function updateBlog(slug: string, payload: Blog){
+  const { data } = await api.put(endPoints.updateBlog.url.replace(":slug", slug), payload)
+  return data;
+}

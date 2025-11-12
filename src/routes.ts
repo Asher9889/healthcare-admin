@@ -1,6 +1,6 @@
 import { Home, FileText, Plus } from "lucide-react";
 import Dashboard from "./pages/Dashboard";
-import { AllBlogs, CreateBlog, Blog } from "./pages";
+import { AllBlogs, CreateBlog, Blog, UpdateBlog } from "./pages";
 
 // export const lazyPage = (path: string) =>
 //   lazy(() => import(`../pages/${path}`).then((m) => ({ default: m.default })));
@@ -23,8 +23,8 @@ export const navItems = [
     children: [
       // { name: "All Blogs", path: "/blogs", element: NotFound,},
       { name: "Create Blog", path: "/blogs/create", icon: Plus, element: CreateBlog, skip: false, },
-      // { name: "Edit Blog", path: "/blogs/:id/edit", element: NotFound, },
-      { name: "View Blog", path: "/blogs/:slug", element: Blog, },
+      { name: "Edit Blog", path: "/blogs/update/:slug", element: UpdateBlog, skip: true, },
+      { name: "View Blog", path: "/blogs/:slug", element: Blog, skip: true, },
     ],
   },
 
@@ -70,6 +70,7 @@ export const navItems = [
   //   name: "Notifications",
   //   path: "/notifications",
   //   icon: Bell,
+  //   children: []
   // },
 
   // {
