@@ -1,10 +1,26 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Blog } from "@/types/blog";
+import { useBlogs } from "../hooks/useBlogs";
+import type { Blog } from "@/validations";
+import { useEffect, useState } from "react";
+
+interface BlogData extends Blog {
+  slug: string;
+  createdAt: Date;
+}
 
 export default function AllBlogs() {
-  const blogs: Blog[] = []; // Later → load from backend
+  const [blogs, setBlogs] = useState<BlogData[]>([]);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  async function fetchBlogs() {
+    const data = await useBlogs();
+    setBlogs(data?.data || []);
+  }
 
   return (
     <div className="mx-auto space-y-4">
@@ -25,14 +41,60 @@ export default function AllBlogs() {
 
       {blogs.length > 0 && (
         <div className="space-y-3">
-          {blogs.map((blog: any) => (
-            <Card key={blog.id}>
-              <CardHeader>
-                <CardTitle>{blog.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">{blog.excerpt}</p>
-              </CardContent>
+          {blogs.map((blog) => (
+            <Card key={blog.slug} className="overflow-hidden">
+              <div className="flex flex-col sm:flex-row">
+
+                {/* Image */}
+                {blog.featuredImage ? (
+                  <img
+                    src={blog.featuredImage}
+                    alt={blog.title}
+                    className="h-36 w-full sm:w-44 object-cover"
+                  />
+                ) : (
+                  <div className="h-36 w-full sm:w-44 bg-muted flex items-center justify-center text-sm text-muted-foreground">
+                    No Image
+                  </div>
+                )}
+
+                <div className="flex-1">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="line-clamp-2 text-lg font-semibold">
+                      {blog.title}
+                    </CardTitle>
+                  </CardHeader>
+
+                  <CardContent className="flex flex-col gap-3">
+                    <p className="text-sm text-muted-foreground line-clamp-3">
+                      {blog.summary}
+                    </p>
+
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>By {blog.author}</span>
+                      {blog.createdAt && (
+                        <span>
+                          {/* {format(new Date(blog.createdAt), "dd MMM yyyy")} */}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Link to={`/blogs/${blog.slug}`}>
+                        <Button size="sm" variant="default">
+                          View
+                        </Button>
+                      </Link>
+
+                      <Link to={`/blogs/update/${blog.slug}`}>
+                        <Button size="sm" variant="outline">
+                          Edit
+                        </Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </div>
+              </div>
             </Card>
           ))}
         </div>

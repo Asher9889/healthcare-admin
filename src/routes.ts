@@ -1,6 +1,6 @@
 import { Home, FileText, Plus } from "lucide-react";
 import Dashboard from "./pages/Dashboard";
-import { AllBlogs, CreateBlog } from "./pages";
+import { AllBlogs, CreateBlog, Blog } from "./pages";
 
 // export const lazyPage = (path: string) =>
 //   lazy(() => import(`../pages/${path}`).then((m) => ({ default: m.default })));
@@ -24,7 +24,7 @@ export const navItems = [
       // { name: "All Blogs", path: "/blogs", element: NotFound,},
       { name: "Create Blog", path: "/blogs/create", icon: Plus, element: CreateBlog, skip: false, },
       // { name: "Edit Blog", path: "/blogs/:id/edit", element: NotFound, },
-      // { name: "View Blog", path: "/blogs/:id", element: NotFound, },
+      { name: "View Blog", path: "/blogs/:slug", element: Blog, },
     ],
   },
 

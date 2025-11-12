@@ -238,7 +238,7 @@ export function SimpleEditor({ value, onChange }: Props) {
         },
       }),
     ],
-    content: value.length > 0 ? value : content,
+    content: value?.length > 0 ? value : content,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML())
     },

@@ -3,4 +3,12 @@ export const endPoints = {
         url: `/blogs`,
         method: 'POST',
     },
+    getAllBlogs: {
+        url: `/blogs`,
+        method: 'GET',
+    },
+    getBlog: {
+        url: "/blogs/:slug",
+        method: "GET"
+    }
 }

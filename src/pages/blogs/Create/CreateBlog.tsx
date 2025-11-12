@@ -9,7 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Blog, blogSchema } from "@/validations";
 import { FeaturedImageField, TipTapEditor } from "@/components";
-import { createBlogService } from "./services/blog.api";
+import { createBlog } from "../services/blog.api";
 import { toast } from "sonner";
 
 export default function CreateBlog() {
@@ -43,7 +43,7 @@ export default function CreateBlog() {
        slug,
      };
      delete newBlog.featuredImageFile;
-     const result = await createBlogService(newBlog);
+     const result = await createBlog(newBlog);
      if(!result.status) {
        toast.error(result.message);
        return;
