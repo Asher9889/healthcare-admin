@@ -1,15 +1,38 @@
 import { routes } from "@/routes";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Outlet } from "react-router-dom";
+import Layout from "@/layout";
 
 const AppRoutes = () => {
+  const loginRoute = routes.find((r) => r.path === "/login");
+  const otherRoutes = routes.filter((r) => r.path !== "/login");
+
   return (
     <Routes>
-      {routes.map((route) => {
-        console.log("routes is", route)
-        return (
-          <Route key={route.name} path={route.path} element={<route.element />} /> 
-        )
-      })}
+      {/* Public Route - Login */}
+      {loginRoute && (
+        <Route
+          key={loginRoute.name}
+          path={loginRoute.path}
+          element={<loginRoute.element />}
+        />
+      )}
+
+      {/* Protected Routes - with Layout */}
+      <Route
+        element={
+          <Layout>
+            <Outlet />
+          </Layout>
+        }
+      >
+        {otherRoutes.map((route) => (
+          <Route
+            key={route.name}
+            path={route.path}
+            element={<route.element />}
+          />
+        ))}
+      </Route>
     </Routes>
   );
 };

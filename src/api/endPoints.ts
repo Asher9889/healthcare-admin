@@ -14,5 +14,9 @@ export const endPoints = {
     updateBlog: {
         url: "/blogs/:slug",
         method: "PUT"
-    }
+    },
+    login: {
+        url: `/auth/login`,
+        method: 'POST',
+    },
 }
