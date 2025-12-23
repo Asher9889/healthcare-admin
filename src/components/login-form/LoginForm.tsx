@@ -4,11 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useLogin } from "./hooks/useLogin";
+import { Spinner } from "../ui/spinner";
 
-export default function LoginForm({ className, ...props}: React.ComponentProps<"div">) {
-  const { register, onSubmit } = useLogin();
-
-  
+export default function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+  const { register, onSubmit, formState, mutation } = useLogin();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -20,7 +19,7 @@ export default function LoginForm({ className, ...props}: React.ComponentProps<"
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} method="POST">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -28,6 +27,9 @@ export default function LoginForm({ className, ...props}: React.ComponentProps<"
                   placeholder="m@example.com"
                   {...register("email")}
                 />
+                {formState.errors.email && (
+                  <p className="text-red-500 text-xs">{formState.errors.email.message}</p>
+                )}
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -40,14 +42,23 @@ export default function LoginForm({ className, ...props}: React.ComponentProps<"
                   </a> */}
                 </div>
                 <Input {...register("password")} id="password" type="password" />
+                {formState.errors.password && (
+                  <p className="text-red-500 text-xs">{formState.errors.password.message}</p>
+                )}
               </Field>
+              {mutation.isError && (
+                <p className="text-start text-red-500 text-xs">
+                  {mutation.error?.message}
+                </p>
+              )}
+
               <Field>
-                <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
+                <Button className="cursor-pointer" type="submit" disabled={mutation.isPending}>{mutation.isPending ? <Spinner /> : "Login"}</Button>
+                <Button className="cursor-pointer" variant="outline" type="button">
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="">Sign up</a>
+                  Don&apos;t have an account? <a href="" >Sign up</a>
                 </FieldDescription>
               </Field>
             </FieldGroup>

@@ -1,13 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginFormSchema, type LoginFormData } from "../schema/LoginForm.schema";
+import { loginFormSchema, type LoginFormData } from "../schema/loginForm.schema";
 import login from "../api/loginForm.api";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 
 export const useLogin = () => {
 
-    const { control, register, handleSubmit } = useForm<LoginFormData>({
+    const navigate = useNavigate();
+    const { control, register, handleSubmit, formState  } = useForm<LoginFormData>({
         resolver: zodResolver(loginFormSchema),
         defaultValues: {
             email: "",
@@ -18,20 +20,21 @@ export const useLogin = () => {
     })
 
     const onSubmit = handleSubmit((data: LoginFormData) => {
-       const result = mutation.mutate(data);
-       console.log(result);
+       if (mutation.isPending) return;
+       mutation.mutate(data);
+      
     })
 
     const mutation = useMutation({
         mutationKey: ["login"],
         mutationFn: login,
         onSuccess: () => {
-            console.log("Api Success");
+            navigate("/")
         },
-        onError: () => {
-            console.log("Api Error");
+        onError: (error) => {
+            console.log("error is", error)
         },
     })
 
-    return { control, register, handleSubmit, onSubmit, mutation };
+    return { control, register, handleSubmit, onSubmit, mutation, formState };
 };

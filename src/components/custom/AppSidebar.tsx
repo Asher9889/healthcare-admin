@@ -36,7 +36,6 @@ export default function AppSidebar() {
                 //@ts-ignore
                 .filter((item) => !item.skip)
                 .map((item) => {
-                  console.log("tems from", item)
                  return (
                    <SidebarItem
                    key={item.name}
@@ -57,7 +56,6 @@ function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
   const navigate = useNavigate();
   // Has children -> parent section menu
   if (item.children?.length) {
-    console.log(item, pathname)
     return (
       <SidebarMenuItem>
         <SidebarMenuButton  onClick={() => navigate(item.path)} tooltip={item.name}>

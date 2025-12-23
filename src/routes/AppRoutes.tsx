@@ -1,6 +1,7 @@
 import { routes } from "@/routes";
 import { Route, Routes, Outlet } from "react-router-dom";
 import Layout from "@/layout";
+import AuthGuard from "@/components/custom/AuthGuard";
 
 const AppRoutes = () => {
   const loginRoute = routes.find((r) => r.path === "/login");
@@ -17,23 +18,27 @@ const AppRoutes = () => {
         />
       )}
 
-      {/* Protected Routes - with Layout */}
-      <Route
-        element={
-          <Layout>
-            <Outlet />
-          </Layout>
-        }
-      >
-        {otherRoutes.map((route) => (
-          <Route
-            key={route.name}
-            path={route.path}
-            element={<route.element />}
-          />
-        ))}
+      {/* Auth Guard */}
+      <Route element={<AuthGuard />}>
+        {/* Protected Routes - with Layout */}
+        <Route
+          element={
+            <Layout>
+              <Outlet />
+            </Layout>
+          }
+        >
+          {otherRoutes.map((route) => (
+            <Route
+              key={route.name}
+              path={route.path}
+              element={<route.element />}
+            />
+          ))}
+        </Route>
       </Route>
     </Routes>
   );
 };
+
 export default AppRoutes;
