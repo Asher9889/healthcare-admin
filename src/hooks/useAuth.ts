@@ -3,8 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
 
 const fetchMe = async () => {
-  const res = await api.get("/auth/me");
-  return res.data;
+  try {
+    const res = await api.get("/auth/me");
+    return res.data;
+  } catch (error) {
+    console.log("error is", error);
+    throw error;
+  }
 };
 
 export const useAuth = () => {

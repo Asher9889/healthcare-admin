@@ -54,11 +54,13 @@ api.interceptors.response.use(
         processQueue(refreshError);
 
         // Optional: logout user
-        await api.post("/auth/logout");
+        // await api.post("/auth/logout");
 
-        window.location.href = "/admin/login";
+        window.location.href = "https://purecheckup.com/admin/login";
+        // window.dispatchEvent(new Event("auth:logout"));
 
         return Promise.reject(refreshError);
+
       } finally {
         isRefreshing = false;
       }

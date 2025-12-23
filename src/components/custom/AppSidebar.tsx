@@ -12,28 +12,11 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
-  SidebarFooter,
 } from "@/components/ui/sidebar";
 import { NavLink, useNavigate } from "react-router-dom";
 import { navItems } from "@/routes";
-import { LogOut } from "lucide-react";
-import { api } from "@/api";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function AppSidebar() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const handleLogout = async () => {
-    try {
-      await api.post("/auth/logout");
-      // Clear auth cache
-      queryClient.setQueryData(["auth", "me"], null);
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed", error);
-    }
-  };
 
 
   return (
@@ -65,17 +48,6 @@ export default function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleLogout} tooltip="Logout">
-              <LogOut />
-              <span>Logout</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
     </Sidebar>
   );
 }
