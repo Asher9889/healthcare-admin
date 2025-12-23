@@ -56,7 +56,7 @@ api.interceptors.response.use(
         // Optional: logout user
         await api.post("/auth/logout");
 
-        window.location.href = "/admin/login/";
+        window.location.href = "/admin/login";
 
         return Promise.reject(refreshError);
       } finally {
