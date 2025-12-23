@@ -12,12 +12,29 @@ import {
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarMenuSubButton,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
-import {  NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { navItems } from "@/routes";
+import { LogOut } from "lucide-react";
+import { api } from "@/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AppSidebar() {
-  
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+      // Clear auth cache
+      queryClient.setQueryData(["auth", "me"], null);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
 
   return (
     <Sidebar collapsible="icon">
@@ -36,18 +53,29 @@ export default function AppSidebar() {
                 //@ts-ignore
                 .filter((item) => !item.skip)
                 .map((item) => {
-                 return (
-                   <SidebarItem
-                   key={item.name}
-                   item={item}
-                   pathname={item.path}
-                   />
+                  return (
+                    <SidebarItem
+                      key={item.name}
+                      item={item}
+                      pathname={item.path}
+                    />
                   )
                 })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={handleLogout} tooltip="Logout">
+              <LogOut />
+              <span>Logout</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }
@@ -58,7 +86,7 @@ function SidebarItem({ item, pathname }: { item: any; pathname: string }) {
   if (item.children?.length) {
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton  onClick={() => navigate(item.path)} tooltip={item.name}>
+        <SidebarMenuButton onClick={() => navigate(item.path)} tooltip={item.name}>
           {item.icon && <item.icon />}
           <span>{item.name}</span>
         </SidebarMenuButton>
