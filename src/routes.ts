@@ -1,6 +1,6 @@
-import { Home, FileText, Plus } from "lucide-react";
+import { Home, FileText, Plus, Stethoscope, User, Calendar, Building2 } from "lucide-react";
 import Dashboard from "./pages/Dashboard";
-import { AllBlogs, CreateBlog, Blog, UpdateBlog, Login } from "./pages";
+import { AllBlogs, CreateBlog, Blog, UpdateBlog, Login, Doctors, Patients, Appointments, Departments } from "./pages";
 
 // export const lazyPage = (path: string) =>
 //   lazy(() => import(`../pages/${path}`).then((m) => ({ default: m.default })));
@@ -35,6 +35,34 @@ export const navItems = [
     ],
   },
 
+  {
+    name: "Doctors",
+    path: "/doctors",
+    icon: Stethoscope,
+    element: Doctors,
+    skip: false,
+  },
+  {
+    name: "Patients",
+    path: "/patients",
+    icon: User,
+    element: Patients,
+    skip: false,
+  },
+  {
+    name: "Appointments",
+    path: "/appointments",
+    icon: Calendar,
+    element: Appointments,
+    skip: false,
+  },
+  {
+    name: "Departments",
+    path: "/departments",
+    icon: Building2,
+    element: Departments,
+    skip: false,
+  },
   // {
   //   name: "Users",
   //   icon: Users,
