@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
+import { EditorContent, EditorContext, useEditor, type JSONContent } from "@tiptap/react"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -186,8 +186,8 @@ const MobileToolbarContent = ({
   </>
 )
 type Props = {
-  value: string
-  onChange: (html: string) => void
+  value: JSONContent;
+  onChange: (html: JSONContent) => void
 }
 
 export function SimpleEditor({ value, onChange }: Props) {
@@ -245,12 +245,12 @@ export function SimpleEditor({ value, onChange }: Props) {
     ],
     content: content,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML())
+      onChange(editor.getJSON())
     },
   })
 
   useEffect(() => {
-  if (editor && value && editor.getHTML() !== value) {
+  if (editor && value && editor.getJSON() !== value) {
     editor.commands.setContent(value);
   }
 }, [value, editor]);

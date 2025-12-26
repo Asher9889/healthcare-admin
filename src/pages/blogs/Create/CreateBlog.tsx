@@ -27,7 +27,10 @@ export default function CreateBlog() {
     defaultValues: {
       title: "",
       summary: "",
-      content: "",
+      content: {
+        type: "doc",
+        content: [],
+      }, // ✅ EMPTY TIPTAP DOC
       featuredImage: "",
       author: "",
     },
@@ -36,24 +39,24 @@ export default function CreateBlog() {
   const title = watch("title");
   const slug = title?.toLowerCase().trim().replace(/\s+/g, "-");
 
-  const onSubmit = async(data: Blog) => {
-   try {
-     const newBlog = {
-       ...data,
-       slug,
-     };
-     delete newBlog.featuredImageFile;
-     const result = await createBlog(newBlog);
-     if(!result.status) {
-       toast.error(result.message);
-       return;
-     }
-     toast.success(result.message);
-     navigate("/blogs");
-   } catch (error:any) {
-     toast.error(error?.response?.data?.message || "Failed to create blog");
-    console.error(error);
-   }
+  const onSubmit = async (data: Blog) => {
+    try {
+      const newBlog = {
+        ...data,
+        slug,
+      };
+      delete newBlog.featuredImageFile;
+      const result = await createBlog(newBlog);
+      if (!result.status) {
+        toast.error(result.message);
+        return;
+      }
+      toast.success(result.message);
+      navigate("/blogs");
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to create blog");
+      console.error(error);
+    }
   };
 
   return (
@@ -89,12 +92,12 @@ export default function CreateBlog() {
           </div>
 
           {/* IMAGE */}
-        <FeaturedImageField
-          register={register}
-          setValue={setValue}
-          error={errors.featuredImage}
-          watch={watch}
-        />
+          <FeaturedImageField
+            register={register}
+            setValue={setValue}
+            error={errors.featuredImage}
+            watch={watch}
+          />
           {/* AUTHOR */}
           <div className="grid gap-1">
             <Label>Author</Label>
@@ -106,23 +109,23 @@ export default function CreateBlog() {
 
           {/* CONTENT */}
           <div className="grid gap-1">
-            <Controller 
+            <Controller
               name="content"
               control={control}
               render={({ field }) => (
                 <TipTapEditor
-                  {...field}
-                  value={field.value}
+                   value={field.value}
+                   onChange={field.onChange}
                 />
               )}
             />
-            
+
             {errors.content && (
               <p className="text-red-500 text-sm">{errors.content.message}</p>
             )}
           </div>
 
-          
+
 
           <Button type="submit" className="w-full">
             Create Blog

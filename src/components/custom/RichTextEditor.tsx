@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { SimpleEditor } from "../tiptap-templates/simple/simple-editor";
+import { type JSONContent } from "@tiptap/react";
 
 type Props = {
-  value: string;
-  onChange: (content: string) => void;
+  value: JSONContent;
+  onChange: (content: JSONContent) => void;
 };
 
 export default function TipTapEditor({ value, onChange }: Props) {

@@ -16,7 +16,10 @@ export default function Blog() {
     const [_blog, setBlog] = useState<Blog>({
         title: "",
         summary: "",
-        content: "",
+        content: {
+            type: "doc",
+            content: [],
+          },
         author: "",
         featuredImage: "",
     })
